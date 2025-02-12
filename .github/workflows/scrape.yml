@@ -1,1 +1,27 @@
+name: DailyScrape
 
+on:
+  schedule:
+    - cron: "0 8 * * *"  # Runs every day at 08:00 UTC
+  workflow_dispatch:      # Allows manual trigger
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+
+      - name: Create service_account.json
+        run: echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" > service_account.json
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        run: python scraper.py
