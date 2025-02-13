@@ -1,12 +1,12 @@
-name: DailyScrape
+name: Every2DaysScrape
 
 on:
   schedule:
-    - cron: "0 8 * * *"  # Runs every day at 08:00 UTC
-  workflow_dispatch:      # Allows manual trigger
+    - cron: '0 8 */2 * *'  # 8:00 UTC, every 2 days
+  workflow_dispatch:
 
 jobs:
-  run:
+  run-scraper:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
@@ -15,13 +15,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.9"
+          python-version: 3.9
 
       - name: Create service_account.json
+        # Write the secret into a file at runtime
         run: echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" > service_account.json
 
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run script
+      - name: Run scraper
         run: python scraper.py
