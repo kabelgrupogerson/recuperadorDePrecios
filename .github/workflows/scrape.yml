@@ -19,7 +19,7 @@ jobs:
 
       - name: Create service_account.json
         # Write the secret into a file at runtime
-        run: echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" > service_account.json
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
 
       - name: Install dependencies
         run: pip install -r requirements.txt
